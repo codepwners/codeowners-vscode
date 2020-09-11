@@ -1,6 +1,8 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { SupportedAdapterType, VCSAdapterFactory } from './adapters/vcs/VCSAdapterFactory';
 import { asyncFilter } from './AsyncUtils';
+import { StatusBar } from './StatusBar';
 
 async function isRepository(workspace: vscode.WorkspaceFolder): Promise<boolean> {
     // @todo Move the list of vcs to config
@@ -30,10 +32,16 @@ export async function activate(context: vscode.ExtensionContext) {
         return;
     }
 
-    const menu = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+    vscode.window.onDidChangeActiveTextEditor((e: vscode.TextEditor | undefined) => {
+        if (e) {
+            console.log(path.dirname(e.document.uri.fsPath));
+        }
+    });
 
-    menu.text = '$(account) Alexey Kureev';
-    menu.show();
+    if (vscode.window.activeTextEditor) {
+        const { fsPath } = vscode.window.activeTextEditor.document.uri;
+        console.log(path.dirname(fsPath));
+    }
 }
 
 /**
