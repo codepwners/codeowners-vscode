@@ -3,3 +3,14 @@ interface VCSAdapter {
     isRepository(path: string): Promise<boolean>;
     getRepositoryRemotes(path: string): Promise<string[]>;
 }
+
+interface VCSInfo {
+    type: string;
+    remotes: string[];
+}
+
+interface Serializable {
+    toJSON(): string;
+}
+
+interface TextEditorLocationInfo {}

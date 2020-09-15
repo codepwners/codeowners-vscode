@@ -1,10 +1,7 @@
+import { TextEditorAdapter } from './adapters/editor/TextEditorAdapter';
 import { VCSAdapterFactory, SupportedAdapterType } from './adapters/vcs/VCSAdapterFactory';
 import { asyncFind } from './AsyncUtils';
-
-interface VCSInfo {
-    type: string;
-    remotes: string[];
-}
+import Cache from './Cache';
 
 /**
  * This service will memoize some repository data that
@@ -13,24 +10,27 @@ interface VCSInfo {
  */
 export class VCSService {
     private adapters: VCSAdapter[];
-    private checkupMap = new Map();
+    private cache = new Cache<VCSInfo>();
 
     constructor(supportedAdapterTypes: SupportedAdapterType[] = [SupportedAdapterType.git]) {
         this.adapters = supportedAdapterTypes.map(VCSAdapterFactory.create);
     }
 
-    async getVCSInfo(path: string): Promise<Readonly<VCSInfo> | null> {
-        if (this.checkupMap.has(path)) {
-            return this.checkupMap.get(path);
+    async getVCSInfo(editorAdapter: TextEditorAdapter): Promise<Readonly<VCSInfo> | null> {
+        const path = editorAdapter.getPath();
+
+        if (this.cache.get(path) !== null) {
+            return this.cache.get(path);
         }
 
         const adapter = await asyncFind(this.adapters, async (adapter: VCSAdapter) => await adapter.isRepository(path));
 
         if (adapter) {
-            return {
+            this.cache.set(path, {
                 type: adapter.type,
                 remotes: await adapter.getRepositoryRemotes(path),
-            };
+            });
+            return this.cache.get(path);
         }
 
         return null;

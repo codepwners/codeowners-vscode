@@ -1,5 +1,5 @@
-import * as path from 'path';
 import * as vscode from 'vscode';
+import { TextEditorAdapter } from './adapters/editor/TextEditorAdapter';
 import { VCSService } from './VCSService';
 
 /**
@@ -8,16 +8,36 @@ import { VCSService } from './VCSService';
  */
 export async function activate(context: vscode.ExtensionContext) {
     const vcs = new VCSService();
-    vscode.window.onDidChangeActiveTextEditor(async (e: vscode.TextEditor | undefined) => {
-        if (e) {
-            const { fsPath } = e.document.uri;
-            console.log(await vcs.getVCSInfo(fsPath));
+
+    vscode.window.onDidChangeActiveTextEditor(async (textEditor: vscode.TextEditor | undefined) => {
+        if (textEditor) {
+            const editorAdapter = new TextEditorAdapter(textEditor);
+            const info = {
+                vcs: await vcs.getVCSInfo(editorAdapter),
+                location: editorAdapter.getLocation(),
+            };
+            console.log(info);
+        }
+    });
+
+    vscode.window.onDidChangeTextEditorSelection(async (e: vscode.TextEditorSelectionChangeEvent) => {
+        if (e.textEditor) {
+            const editorAdapter = new TextEditorAdapter(e.textEditor);
+            const info = {
+                vcs: await vcs.getVCSInfo(editorAdapter),
+                location: editorAdapter.getLocation(),
+            };
+            console.log(info);
         }
     });
 
     if (vscode.window.activeTextEditor) {
-        const { fsPath } = vscode.window.activeTextEditor.document.uri;
-        console.log(await vcs.getVCSInfo(fsPath));
+        const editorAdapter = new TextEditorAdapter(vscode.window.activeTextEditor);
+        const info = {
+            vcs: await vcs.getVCSInfo(editorAdapter),
+            location: editorAdapter.getLocation(),
+        };
+        console.log(info);
     }
 }
 
