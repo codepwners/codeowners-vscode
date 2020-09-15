@@ -9,17 +9,6 @@ import { VCSService } from './VCSService';
 export async function activate(context: vscode.ExtensionContext) {
     const vcs = new VCSService();
 
-    vscode.window.onDidChangeActiveTextEditor(async (textEditor: vscode.TextEditor | undefined) => {
-        if (textEditor) {
-            const editorAdapter = new TextEditorAdapter(textEditor);
-            const info = {
-                vcs: await vcs.getVCSInfo(editorAdapter),
-                location: editorAdapter.getLocation(),
-            };
-            console.log(info);
-        }
-    });
-
     vscode.window.onDidChangeTextEditorSelection(async (e: vscode.TextEditorSelectionChangeEvent) => {
         if (e.textEditor) {
             const editorAdapter = new TextEditorAdapter(e.textEditor);
