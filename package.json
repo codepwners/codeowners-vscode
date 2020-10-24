@@ -1,5 +1,6 @@
 {
     "name": "codeowners-vscode",
+    "publisher": "codeowners",
     "displayName": "codeowners",
     "description": "",
     "version": "0.0.1",

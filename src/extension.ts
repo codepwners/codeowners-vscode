@@ -9,6 +9,8 @@ import { VCSService } from './VCSService';
 export async function activate(context: vscode.ExtensionContext) {
     const vcs = new VCSService();
 
+    const session = await vscode.authentication.getSession('github', [], { createIfNone: true });
+
     vscode.window.onDidChangeTextEditorSelection(async (e: vscode.TextEditorSelectionChangeEvent) => {
         if (e.textEditor) {
             const editorAdapter = new TextEditorAdapter(e.textEditor);
@@ -26,7 +28,6 @@ export async function activate(context: vscode.ExtensionContext) {
             vcs: await vcs.getVCSInfo(editorAdapter),
             location: editorAdapter.getLocation(),
         };
-        console.log(info);
     }
 }
 
