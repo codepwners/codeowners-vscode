@@ -1,4 +1,4 @@
-export default class Cache<T> implements Serializable {
+export class Cache<T> implements Serializable {
     private cache: Record<string, T>;
 
     constructor(cache: Record<string, T> = {}) {

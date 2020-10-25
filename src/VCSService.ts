@@ -1,7 +1,7 @@
 import { TextEditorAdapter } from './adapters/editor/TextEditorAdapter';
 import { VCSAdapterFactory, SupportedAdapterType } from './adapters/vcs/VCSAdapterFactory';
 import { asyncFind } from './AsyncUtils';
-import Cache from './Cache';
+import { Cache } from './Cache';
 
 /**
  * This service will memoize some repository data that

@@ -9,8 +9,6 @@ import { VCSService } from './VCSService';
 export async function activate(context: vscode.ExtensionContext) {
     const vcs = new VCSService();
 
-    const session = await vscode.authentication.getSession('github', [], { createIfNone: true });
-
     vscode.window.onDidChangeTextEditorSelection(async (e: vscode.TextEditorSelectionChangeEvent) => {
         if (e.textEditor) {
             const editorAdapter = new TextEditorAdapter(e.textEditor);
