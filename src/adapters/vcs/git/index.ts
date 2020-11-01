@@ -39,6 +39,7 @@ export class GitAdapter implements VCSAdapter {
             return false;
         } catch (e) {
             console.error('Can not define state of repository: ', e);
+
             return false;
         }
     }
@@ -55,6 +56,7 @@ export class GitAdapter implements VCSAdapter {
         return [...urlSet];
       } catch (e) {
         console.error('Can not define fetch url of repository: ', e);
+
         return [];
       }
     }
