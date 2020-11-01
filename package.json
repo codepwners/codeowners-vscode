@@ -19,6 +19,7 @@
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts",
         "watch": "tsc -watch -p ./",
+        "dev": "rm -rf out && npm run watch",
         "pretest": "npm run compile && npm run lint",
         "test": "node ./out/test/runTest.js"
     },
@@ -36,5 +37,8 @@
         "typescript": "^4.0.2",
         "vscode-test": "^1.4.0"
     },
-    "dependencies": {}
+    "dependencies": {},
+    "extensionDependencies": [
+        "vscode.git"
+    ]
 }
