@@ -1,6 +1,10 @@
 import { extensions } from 'vscode';
-import { GitState } from './types';
-import { API, Remote } from '../../../../typedef/git';
+import { API, Remote } from './git';
+
+enum GitState {
+    initialized = 'initialized',
+    uninitialized = 'uninitialized',
+}
 
 export class GitAdapter implements VCSAdapter {
     readonly type = 'git';
