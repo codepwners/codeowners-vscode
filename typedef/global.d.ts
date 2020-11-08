@@ -1,6 +1,6 @@
 interface VCSAdapter {
     readonly type: string;
-    isRepository(path: string): Promise<boolean>;
+    isRepository(path?: string): boolean;
     getRepositoryRemotes(path: string): Promise<string[]>;
 }
 
